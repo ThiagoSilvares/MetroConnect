@@ -1,0 +1,22 @@
+rodar:
+- flutter run
+
+baixar:
+- flutter pub add get
+
+rodar camera:
+- python lib/faceRecognition.py
+
+rodar python:
+- python lib/server.py 
+
+instalar:
+pip install cmake
+pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
+pip install opencv-python
+pip install face_recognition
+pip install git+https://github.com/ageitgey/face_recognition_models
+pip install Pillow
+
+solução caso aparece problema com o face_recognition_models:
+- pip install setuptools

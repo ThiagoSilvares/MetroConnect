@@ -14,9 +14,11 @@ class WelcomeScreen extends StatelessWidget {
        width: double.infinity,
        decoration: const BoxDecoration(
          gradient: LinearGradient(
+           begin: Alignment.topCenter, 
+           end: Alignment.bottomCenter,
            colors: [
-             Color(0xffB81736),
-             Color(0xff281537),
+             Color.fromARGB(255, 255, 255, 255),
+             Color.fromARGB(255, 203, 6, 45),
            ]
          )
        ),
@@ -27,9 +29,9 @@ class WelcomeScreen extends StatelessWidget {
              child: Image(image: AssetImage('assets/logo.png')),
            ),
            const SizedBox(
-             height: 100,
+             height: 70,
            ),
-           const Text('Welcome Back',style: TextStyle(
+           const Text('Metro Connect',style: TextStyle(
              fontSize: 30,
              color: Colors.white
            ),),
@@ -37,7 +39,7 @@ class WelcomeScreen extends StatelessWidget {
           GestureDetector(
             onTap: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const loginScreen()));
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
             child: Container(
               height: 53,
@@ -46,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(color: Colors.white),
               ),
-              child: const Center(child: Text('SIGN IN',style: TextStyle(
+              child: const Center(child: Text('Login',style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white
@@ -67,7 +69,7 @@ class WelcomeScreen extends StatelessWidget {
                  borderRadius: BorderRadius.circular(30),
                  border: Border.all(color: Colors.white),
                ),
-               child: const Center(child: Text('SIGN UP',style: TextStyle(
+               child: const Center(child: Text('Cadastre-se',style: TextStyle(
                    fontSize: 20,
                    fontWeight: FontWeight.bold,
                    color: Colors.black
@@ -75,12 +77,7 @@ class WelcomeScreen extends StatelessWidget {
              ),
            ),
            const Spacer(),
-           const Text('Login with Social Media',style: TextStyle(
-               fontSize: 17,
-               color: Colors.white
-           ),),//
-          const SizedBox(height: 12,),
-           const Image(image: AssetImage('assets/social.png'))
+           
           ]
        ),
      ),
