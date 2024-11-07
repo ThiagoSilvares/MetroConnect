@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'loginScreen.dart';
 
-class RegScreen extends StatelessWidget {
-  const RegScreen({Key? key}) : super(key: key);
+class RegScreenUser extends StatefulWidget {
+  const RegScreenUser({Key? key}) : super(key: key);
+
+  @override
+  State<RegScreenUser> createState() => _RegScreenUserState();
+}
+
+class _RegScreenUserState extends State<RegScreenUser> {
+  String? _gratuidadeSelecionada; 
+  final TextEditingController _registroController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,7 @@ class RegScreen extends StatelessWidget {
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
               child: Text(
-                'Crie sua\nConta',
+                'Crie Conta\n com Gratuidade',
                 style: TextStyle(
                     fontSize: 30,
                     color: Colors.white,
@@ -57,7 +64,7 @@ class RegScreen extends StatelessWidget {
                     ),
                     const TextField(
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.person, color: Colors.grey),
+                          suffixIcon: Icon(Icons.email, color: Colors.grey),
                           label: Text(
                             'Email',
                             style: TextStyle(
@@ -77,30 +84,57 @@ class RegScreen extends StatelessWidget {
                             ),
                           )),
                     ),
+                    const SizedBox(height: 0),
+                    
                     const TextField(
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
+                          suffixIcon: Icon(Icons.numbers, color: Colors.grey),
                           label: Text(
-                            'Senha',
+                            'Número de Registro (SP Trans)',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 203, 6, 45),
                             ),
                           )),
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
-                          label: Text(
-                            'Confirme sua Senha',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 203, 6, 45),
-                            ),
-                          )),
+                    const SizedBox(height: 20),
+
+                    RadioListTile<String>(
+                      title: const Text(
+                        'Gratuidade por Idade',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 203, 6, 45),
+                        ),
+                      ),
+                      value: 'idade',
+                      groupValue: _gratuidadeSelecionada,
+                      onChanged: (value) {
+                        setState(() {
+                          _gratuidadeSelecionada = value;
+                        });
+                      },
                     ),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 50),
+                    
+                    RadioListTile<String>(
+                      title: const Text(
+                        'Gratuidade por Número de Registro (SP Trans)',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 203, 6, 45),
+                        ),
+                      ),
+                      value: 'registro',
+                      groupValue: _gratuidadeSelecionada,
+                      onChanged: (value) {
+                        setState(() {
+                          _gratuidadeSelecionada = value;
+                        });
+                      },
+                    ),
+                    
+                    const SizedBox(height: 30),
+                    
                     Container(
                       height: 55,
                       width: 300,
@@ -119,35 +153,6 @@ class RegScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 50),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text(
-                            "Você já tem uma conta?",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.grey),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                              );
-                            },
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

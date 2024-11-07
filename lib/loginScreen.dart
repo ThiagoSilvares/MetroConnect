@@ -92,28 +92,22 @@ class LoginScreen extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        height: 55,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 203, 6, 45),
-                              Color.fromARGB(255, 255, 255, 255),
-                            ],
-                          ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Entrar',
-                            style: TextStyle(
+                      height: 55,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Color.fromARGB(255, 203, 6, 45),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Cadastrar',
+                          style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
+                              color: Colors.white),
                         ),
                       ),
+                    ),
                     ),
                     const SizedBox(height: 150),
                     Align(

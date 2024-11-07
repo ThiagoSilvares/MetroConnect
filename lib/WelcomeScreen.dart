@@ -29,12 +29,12 @@ class WelcomeScreen extends StatelessWidget {
              child: Image(image: AssetImage('assets/logo.png')),
            ),
            const SizedBox(
-             height: 70,
+             height: 20,
            ),
-           const Text('Metro Connect',style: TextStyle(
-             fontSize: 30,
-             color: Colors.white
-           ),),
+          //  const Text('Metro Connect',style: TextStyle(
+          //    fontSize: 30,
+          //    color: Colors.white
+          //  ),),
           const SizedBox(height: 30,),
           GestureDetector(
             onTap: (){

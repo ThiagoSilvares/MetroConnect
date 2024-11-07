@@ -20,3 +20,7 @@ pip install Pillow
 
 solução caso aparece problema com o face_recognition_models:
 - pip install setuptools
+
+ips:
+- meu apto: 192.168.15.168
+- meu cell: 172.20.10.6
