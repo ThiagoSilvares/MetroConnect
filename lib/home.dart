@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
-
-// Importe o arquivo regScreenUser.dart
 import 'regScreenUser.dart';
 
 class Home extends StatefulWidget {
@@ -21,7 +19,7 @@ class _HomeState extends State<Home> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Home'),
-    RegScreenUser(), // Adicione a tela de cadastro aqui
+    RegScreenUser(),
     Text('Index 2: Camera'),
     Text('Index 3: Biometria'),
     Text('Index 4: Sair'),
@@ -69,7 +67,7 @@ class _HomeState extends State<Home> {
         final recognizedFaces = data["recognized_faces"];
         setState(() {
           recognitionResult = recognizedFaces.isNotEmpty
-              ? recognizedFaces.join(", ")
+              ? "Acesso liberado"
               : "Usuário não cadastrado";
         });
       } else {

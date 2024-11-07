@@ -25,17 +25,13 @@ class WelcomeScreen extends StatelessWidget {
        child: Column(
          children: [
            const Padding(
-             padding: EdgeInsets.only(top: 200.0),
+             padding: EdgeInsets.only(top: 170.0),
              child: Image(image: AssetImage('assets/logo.png')),
            ),
            const SizedBox(
-             height: 20,
+             height: 15,
            ),
-          //  const Text('Metro Connect',style: TextStyle(
-          //    fontSize: 30,
-          //    color: Colors.white
-          //  ),),
-          const SizedBox(height: 30,),
+          const SizedBox(height: 20,),
           GestureDetector(
             onTap: (){
               Navigator.push(context,

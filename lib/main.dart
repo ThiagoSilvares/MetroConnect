@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart'; // Importação necessária
-import 'WelcomeScreen.dart'; // Substitua pelo nome correto da sua tela de boas-vindas
+import 'package:firebase_core/firebase_core.dart'; 
+import 'WelcomeScreen.dart'; 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Garante que a inicialização ocorra antes de qualquer widget
-  await Firebase.initializeApp();  // Inicializa o Firebase corretamente
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await Firebase.initializeApp();  
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         fontFamily: ('inter'),
         useMaterial3: true,
       ),
-      home: const WelcomeScreen(), // Sua tela inicial
+      home: const WelcomeScreen(),
     );
   }
 }
