@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
       final base64Image = base64Encode(bytes);
 
       final response = await http.post(
-        Uri.parse("http://172.20.10.6:5000/recognize"),
+        Uri.parse("http://192.168.15.168:5000/recognize"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'image': base64Image}),
       );

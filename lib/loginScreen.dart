@@ -1,9 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'regScreen.dart';
 import 'home.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> loginUser(BuildContext context) async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      _showError(context, "Por favor, preencha todos os campos.");
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Home()),
+      );
+    } catch (e) {
+      _showError(context, "Email ou senha incorretos. Tente novamente.");
+      print("Erro ao fazer login: $e");
+    }
+  }
+
+  void _showError(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Erro"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +92,9 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
                         suffixIcon: Icon(
                           Icons.person,
                           color: Colors.grey,
@@ -65,8 +108,10 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
                         suffixIcon: Icon(
                           Icons.visibility_off,
                           color: Colors.grey,
@@ -83,31 +128,25 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     const SizedBox(height: 50),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          ),
-                        );
-                      },
+                      onTap: () => loginUser(context),
                       child: Container(
-                      height: 55,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color.fromARGB(255, 203, 6, 45),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Cadastrar',
-                          style: TextStyle(
+                        height: 55,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: const Color.fromARGB(255, 203, 6, 45),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Entrar',
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Colors.white),
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
                     ),
                     const SizedBox(height: 150),
                     Align(
@@ -128,7 +167,7 @@ class LoginScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const RegScreen(),
+                                  builder: (context) => RegScreen(),
                                 ),
                               );
                             },

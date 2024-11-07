@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "950953298249",
+    "project_id": "metro-connect-pi",
+    "storage_bucket": "metro-connect-pi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950953298249:android:d6a4dd5b7864118c7c3298",
+        "android_client_info": {
+          "package_name": "com.example.untitled3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWNaqFSXYvKB_mw6wQJQpILvmsiWr1pks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950953298249:android:175dd4c1b74846e27c3298",
+        "android_client_info": {
+          "package_name": "pi.metro.connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWNaqFSXYvKB_mw6wQJQpILvmsiWr1pks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
