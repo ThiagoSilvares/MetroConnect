@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import 'regScreenUser.dart';
+import 'camFunction.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,7 +21,7 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Home'),
     RegScreenUser(),
-    Text('Index 2: Camera'),
+    CamFunction(),
     Text('Index 3: Biometria'),
     Text('Index 4: Sair'),
   ];
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> {
     if (cameras.isNotEmpty) {
       _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
       await _cameraController?.initialize();
-      setState(() {}); 
+      setState(() {});
     }
   }
 
@@ -46,9 +47,11 @@ class _HomeState extends State<Home> {
       return;
     }
 
+    if (_isRecognizing) return;  // Evita iniciar reconhecimento se já está em andamento
+
     setState(() {
       _isRecognizing = true;
-      recognitionResult = "Aguarde o reconhecimento"; 
+      recognitionResult = "Aguarde o reconhecimento";
     });
 
     try {
@@ -90,9 +93,9 @@ class _HomeState extends State<Home> {
 
   void refazerReconhecimento() {
     setState(() {
-      recognitionResult = "Aguarde o reconhecimento"; 
+      recognitionResult = "Aguarde o reconhecimento";
     });
-    iniciarReconhecimentoFacial(); 
+    iniciarReconhecimentoFacial();
   }
 
   @override
@@ -113,7 +116,7 @@ class _HomeState extends State<Home> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    margin: const EdgeInsets.only(bottom: 10), 
+                    margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 203, 6, 45),
                       borderRadius: BorderRadius.circular(8),
@@ -149,7 +152,7 @@ class _HomeState extends State<Home> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, 
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -178,7 +181,7 @@ class _HomeState extends State<Home> {
             itemSelecionado = valor;
           });
           if (valor == 3 && !_isRecognizing) {
-            iniciarReconhecimentoFacial();
+            iniciarReconhecimentoFacial();  // Inicia o reconhecimento quando o usuário seleciona a opção
           }
         },
         selectedItemColor: const Color.fromARGB(255, 203, 6, 45),

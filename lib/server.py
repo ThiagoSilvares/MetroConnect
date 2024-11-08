@@ -2,6 +2,7 @@ import base64
 import cv2
 import face_recognition
 import numpy as np
+import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -9,14 +10,19 @@ app = Flask(__name__)
 known_face_encodings = []
 known_face_names = []
 
-# Carregar imagens e codificações
-known_person1_image = face_recognition.load_image_file("lib/images/ThiagoSilvares.jpg")
-known_person2_image = face_recognition.load_image_file("lib/images/MarianaRusso.jpg")
-known_person1_encoding = face_recognition.face_encodings(known_person1_image)[0]
-known_person2_encoding = face_recognition.face_encodings(known_person2_image)[0]
-
-known_face_encodings.extend([known_person1_encoding, known_person2_encoding])
-known_face_names.extend(["Thiago Silvares", "Mariana Russo"])
+# Carregar todas as imagens e codificações na pasta lib/images
+image_dir = "lib/images"
+for filename in os.listdir(image_dir):
+    if filename.endswith(".jpg") or filename.endswith(".png"):  # Verifica se é uma imagem
+        image_path = os.path.join(image_dir, filename)
+        image = face_recognition.load_image_file(image_path)
+        try:
+            encoding = face_recognition.face_encodings(image)[0]
+            known_face_encodings.append(encoding)
+            name = os.path.splitext(filename)[0]  # Usa o nome do arquivo como nome da pessoa
+            known_face_names.append(name)
+        except IndexError:
+            print(f"A imagem {filename} não contém nenhum rosto reconhecível e será ignorada.")
 
 @app.route('/recognize', methods=['POST'])
 def recognize_face():
