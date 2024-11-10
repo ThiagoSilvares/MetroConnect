@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import 'regScreenUser.dart';
-import 'WelcomeScreen.dart'; // Importe a tela de boas-vindas
+import 'WelcomeScreen.dart'; 
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Fecha o diálogo sem fazer nada
+                Navigator.pop(context); 
               },
               child: const Text("Não"),
             ),

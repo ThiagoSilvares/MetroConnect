@@ -131,7 +131,7 @@ class _FaceRecognitionScreenState extends State<FaceRecognitionScreen> {
               ),
               child: _cameraController != null && _cameraController!.value.isInitialized
                   ? Transform.rotate(
-                      angle: -90 * 3.1415926535 / 180, // Rotaciona 90 graus para a esquerda
+                      angle: -90 * 3.1415926535 / 180, 
                       child: AspectRatio(
                         aspectRatio: _cameraController!.value.aspectRatio,
                         child: CameraPreview(_cameraController!),

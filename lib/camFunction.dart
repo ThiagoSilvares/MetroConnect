@@ -60,7 +60,6 @@ class _CamFunctionState extends State<CamFunction> {
         setState(() {
           recognitionResult = "Foto tirada com sucesso";
         });
-        // Retorna para a tela anterior após sucesso
         Navigator.pop(context, true);
       } else {
         setState(() {

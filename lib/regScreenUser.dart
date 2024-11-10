@@ -23,7 +23,6 @@ class _RegScreenUserState extends State<RegScreenUser> {
       return;
     }
 
-    // Mostrar diálogo de permissão para armazenar a foto
     bool? permissoes = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -32,11 +31,11 @@ class _RegScreenUserState extends State<RegScreenUser> {
           content: const Text("Você permite que a sua foto seja armazenada para o reconhecimento?"),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(false), // Retorna "não"
+              onPressed: () => Navigator.of(context).pop(false), 
               child: const Text("Não"),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(true), // Retorna "sim"
+              onPressed: () => Navigator.of(context).pop(true), 
               child: const Text("Sim"),
             ),
           ],
@@ -44,7 +43,6 @@ class _RegScreenUserState extends State<RegScreenUser> {
       },
     );
 
-    // Verifica se o usuário concordou com o armazenamento da foto
     if (permissoes == true) {
       try {
         await FirebaseFirestore.instance.collection('gratuidade').add({
@@ -141,7 +139,7 @@ class _RegScreenUserState extends State<RegScreenUser> {
                     const SizedBox(height: 15),
                     RadioListTile<String>(
                       title: const Text(
-                        'Gratuidade para Idosos (+60 anos)',
+                        'Gratuidade para Idosos (+60 anos) - renovar a cada 5 anos',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 203, 6, 45),
@@ -157,7 +155,7 @@ class _RegScreenUserState extends State<RegScreenUser> {
                     ),
                     RadioListTile<String>(
                       title: const Text(
-                        'Gratuidade para Pessoas com Deficiência (PCD)',
+                        'Gratuidade para Pessoas com Deficiência (PCD) - renovar a cada 1 ano',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 203, 6, 45),
@@ -173,7 +171,7 @@ class _RegScreenUserState extends State<RegScreenUser> {
                     ),
                     RadioListTile<String>(
                       title: const Text(
-                        'Gratuidade para Estudantes',
+                        'Gratuidade para Estudantes - renovar a cada 1 ano',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 203, 6, 45),
