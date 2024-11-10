@@ -10,16 +10,15 @@ app = Flask(__name__)
 known_face_encodings = []
 known_face_names = []
 
-# Carregar todas as imagens e codificações na pasta lib/images
 image_dir = "lib/images"
 for filename in os.listdir(image_dir):
-    if filename.endswith(".jpg") or filename.endswith(".png"):  # Verifica se é uma imagem
+    if filename.endswith(".jpg") or filename.endswith(".png"):  
         image_path = os.path.join(image_dir, filename)
         image = face_recognition.load_image_file(image_path)
         try:
             encoding = face_recognition.face_encodings(image)[0]
             known_face_encodings.append(encoding)
-            name = os.path.splitext(filename)[0]  # Usa o nome do arquivo como nome da pessoa
+            name = os.path.splitext(filename)[0] 
             known_face_names.append(name)
         except IndexError:
             print(f"A imagem {filename} não contém nenhum rosto reconhecível e será ignorada.")
@@ -28,7 +27,6 @@ for filename in os.listdir(image_dir):
 def recognize_face():
     data = request.get_json()
 
-    # Receber a imagem em base64
     img_data = base64.b64decode(data['image'])
     np_img = np.frombuffer(img_data, dtype=np.uint8)
     frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)

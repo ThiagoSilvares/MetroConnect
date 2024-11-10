@@ -11,12 +11,10 @@ class RegScreen extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  // FocusNodes para os campos
   final _fullNameFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
 
   Future<void> registerUser(BuildContext context) async {
-    // Verifica se algum campo está vazio
     if (_fullNameController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
@@ -25,19 +23,16 @@ class RegScreen extends StatelessWidget {
       return;
     }
 
-    // Verifica se o email contém "@metro.com"
     if (!_emailController.text.contains("@metro.com")) {
       _showError(context, "O email deve conter '@metro.com'.");
       return;
     }
 
-    // Verifica se a senha tem pelo menos 6 caracteres
     if (_passwordController.text.length < 6) {
       _showError(context, "A senha deve conter pelo menos 6 caracteres.");
       return;
     }
 
-    // Verifica se as senhas coincidem
     if (_passwordController.text != _confirmPasswordController.text) {
       _showError(context, "Senha e Confirme sua Senha devem ser idênticas.");
       return;
@@ -61,7 +56,7 @@ class RegScreen extends StatelessWidget {
       );
     } catch (e) {
       _showError(context, "Erro ao cadastrar. Tente novamente.");
-      print("Erro ao cadastrar: $e"); 
+      print("Erro ao cadastrar: $e");
     }
   }
 
@@ -114,7 +109,9 @@ class RegScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      minHeight: isKeyboardVisible ? constraints.maxHeight : constraints.maxHeight - MediaQuery.of(context).viewInsets.bottom,
+                      minHeight: isKeyboardVisible
+                          ? constraints.maxHeight
+                          : constraints.maxHeight - MediaQuery.of(context).viewInsets.bottom,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 163.0),
@@ -125,11 +122,9 @@ class RegScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 70),
                           child: Column(
-                            mainAxisAlignment: isKeyboardVisible
-                                ? MainAxisAlignment.start
-                                : MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               GestureDetector(
                                 onTap: () {
@@ -151,6 +146,7 @@ class RegScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 16),
                               GestureDetector(
                                 onTap: () {
                                   FocusScope.of(context).requestFocus(_emailFocusNode);
@@ -171,6 +167,7 @@ class RegScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 16),
                               TextField(
                                 controller: _passwordController,
                                 obscureText: true,
@@ -186,6 +183,7 @@ class RegScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 16),
                               TextField(
                                 controller: _confirmPasswordController,
                                 obscureText: true,

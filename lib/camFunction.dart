@@ -46,31 +46,28 @@ class _CamFunctionState extends State<CamFunction> {
     }
 
     try {
-      print("Tentando tirar foto...");
       final image = await _cameraController!.takePicture();
       final bytes = await image.readAsBytes();
       final base64Image = base64Encode(bytes);
 
-      print("Imagem capturada, enviando ao servidor...");
       final response = await http.post(
-        Uri.parse("http://192.168.15.168:5000/take_photo"),
+        Uri.parse("http://192.168.0.111:5000/take_photo"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'image': base64Image}),
       );
 
       if (response.statusCode == 200) {
-        print("Foto enviada com sucesso.");
         setState(() {
           recognitionResult = "Foto tirada com sucesso";
         });
+        // Retorna para a tela anterior após sucesso
+        Navigator.pop(context, true);
       } else {
-        print("Erro na resposta do servidor: ${response.statusCode}");
         setState(() {
           recognitionResult = "Erro ao tirar foto";
         });
       }
     } catch (e) {
-      print("Erro ao tirar foto: $e");
       setState(() {
         recognitionResult = "Erro: $e";
       });
@@ -86,6 +83,21 @@ class _CamFunctionState extends State<CamFunction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'Câmera',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: Center(
         child: _isCameraInitialized
             ? Column(
@@ -101,7 +113,7 @@ class _CamFunctionState extends State<CamFunction> {
                       recognitionResult,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 20, // Aumentando o tamanho do texto
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -117,22 +129,20 @@ class _CamFunctionState extends State<CamFunction> {
                     onPressed: _tirarFoto,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 203, 6, 45),
-                      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20), // Aumentando o tamanho do botão
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                     ),
                     child: const Text(
                       "Tirar Foto",
                       style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 18, // Aumentando o tamanho do texto do botão
                       ),
                     ),
                   ),
                 ],
               )
-            : const CircularProgressIndicator(),
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }

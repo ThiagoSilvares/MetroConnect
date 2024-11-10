@@ -1,12 +1,12 @@
 import base64
 import cv2
+import numpy as np
 import os
 import datetime
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Diretório para salvar as fotos
 save_dir = "lib/images"
 os.makedirs(save_dir, exist_ok=True)
 
@@ -18,13 +18,16 @@ def take_photo():
     
     if base64_image:
         try:
-            # Decodifica a imagem em base64
+            # Decodifica a imagem base64
             image_data = base64.b64decode(base64_image)
+            np_image = np.frombuffer(image_data, np.uint8)
+            img = cv2.imdecode(np_image, cv2.IMREAD_COLOR)
             
-            # Salva a imagem no diretório especificado
+            # Define o nome do arquivo com timestamp
             filename = os.path.join(save_dir, f"foto_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg")
-            with open(filename, "wb") as f:
-                f.write(image_data)
+            
+            # Salva a imagem com alta qualidade
+            cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 95])  # Ajuste de qualidade para 95
             
             print(f"Foto salva com sucesso em {filename}")
             return jsonify({"status": "Foto tirada com sucesso", "filename": filename})

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'camFunction.dart';
 
 class RegScreenUser extends StatefulWidget {
   const RegScreenUser({Key? key}) : super(key: key);
@@ -22,23 +23,64 @@ class _RegScreenUserState extends State<RegScreenUser> {
       return;
     }
 
-    try {
-      await FirebaseFirestore.instance.collection('gratuidade').add({
-        'dataNascimento': _dataNascimentoController.text,
-        'gratuidade': _gratuidadeSelecionada,
-      });
+    // Mostrar diálogo de permissão para armazenar a foto
+    bool? permissoes = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Permissão de Armazenamento de Foto"),
+          content: const Text("Você permite que a sua foto seja armazenada para o reconhecimento?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // Retorna "não"
+              child: const Text("Não"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // Retorna "sim"
+              child: const Text("Sim"),
+            ),
+          ],
+        );
+      },
+    );
 
+    // Verifica se o usuário concordou com o armazenamento da foto
+    if (permissoes == true) {
+      try {
+        await FirebaseFirestore.instance.collection('gratuidade').add({
+          'dataNascimento': _dataNascimentoController.text,
+          'gratuidade': _gratuidadeSelecionada,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+        );
+
+        _dataNascimentoController.clear();
+        setState(() {
+          _gratuidadeSelecionada = null;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao cadastrar: $e')),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+        const SnackBar(content: Text('Cadastro não realizado')),
       );
+    }
+  }
 
-      _dataNascimentoController.clear();
-      setState(() {
-        _gratuidadeSelecionada = null;
-      });
-    } catch (e) {
+  Future<void> _openCamera() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CamFunction()),
+    );
+
+    if (result == true) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao cadastrar: $e')),
+        const SnackBar(content: Text('Foto capturada com sucesso!')),
       );
     }
   }
@@ -162,10 +204,8 @@ class _RegScreenUserState extends State<RegScreenUser> {
                       },
                     ),
                     const SizedBox(height: 20),
-
                     GestureDetector(
-                      onTap: () {
-                      },
+                      onTap: _openCamera,
                       child: Container(
                         height: 55,
                         width: 220,
@@ -185,9 +225,7 @@ class _RegScreenUserState extends State<RegScreenUser> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 47),
-
                     GestureDetector(
                       onTap: _cadastrarUsuario,
                       child: Container(
@@ -208,7 +246,7 @@ class _RegScreenUserState extends State<RegScreenUser> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30), 
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),

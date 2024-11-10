@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import 'regScreenUser.dart';
-import 'camFunction.dart';
+import 'WelcomeScreen.dart'; // Importe a tela de boas-vindas
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,18 +18,12 @@ class _HomeState extends State<Home> {
   bool _isRecognizing = false;
   String recognitionResult = "Aguarde o reconhecimento";
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Home'),
-    RegScreenUser(),
-    CamFunction(),
-    Text('Index 3: Biometria'),
-    Text('Index 4: Sair'),
-  ];
-
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    if (itemSelecionado == 1) {
+      _initializeCamera();
+    }
   }
 
   Future<void> _initializeCamera() async {
@@ -47,7 +41,7 @@ class _HomeState extends State<Home> {
       return;
     }
 
-    if (_isRecognizing) return;  // Evita iniciar reconhecimento se já está em andamento
+    if (_isRecognizing) return;
 
     setState(() {
       _isRecognizing = true;
@@ -60,7 +54,7 @@ class _HomeState extends State<Home> {
       final base64Image = base64Encode(bytes);
 
       final response = await http.post(
-        Uri.parse("http://192.168.15.168:5000/recognize"),
+        Uri.parse("http://192.168.0.111:5000/recognize"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'image': base64Image}),
       );
@@ -74,13 +68,11 @@ class _HomeState extends State<Home> {
               : "Usuário não cadastrado";
         });
       } else {
-        print("Erro ao conectar ao servidor.");
         setState(() {
           recognitionResult = "Erro ao conectar";
         });
       }
     } catch (e) {
-      print("Erro: $e");
       setState(() {
         recognitionResult = "Erro: $e";
       });
@@ -98,90 +90,126 @@ class _HomeState extends State<Home> {
     iniciarReconhecimentoFacial();
   }
 
+  void _showExitConfirmation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Você tem certeza que quer sair?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o diálogo sem fazer nada
+              },
+              child: const Text("Não"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                );
+              },
+              child: const Text("Sim"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     _cameraController?.dispose();
     super.dispose();
   }
 
+  Widget _buildRecognitionScreen() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          margin: const EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 203, 6, 45),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            recognitionResult,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.5,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 4),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: _cameraController != null && _cameraController!.value.isInitialized
+              ? CameraPreview(_cameraController!)
+              : const Center(child: CircularProgressIndicator()),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: refazerReconhecimento,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 203, 6, 45),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+          ),
+          child: const Text(
+            "Refazer Reconhecimento",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        if (_isRecognizing)
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
-        child: itemSelecionado == 3 && _cameraController != null && _cameraController!.value.isInitialized
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    margin: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 203, 6, 45),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      recognitionResult,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 4),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: CameraPreview(_cameraController!),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: refazerReconhecimento,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 203, 6, 45),
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                    ),
-                    child: const Text(
-                      "Refazer Reconhecimento",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  if (_isRecognizing)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: CircularProgressIndicator(),
-                    ),
-                ],
-              )
-            : Center(
-                child: _widgetOptions.elementAt(itemSelecionado),
-              ),
+        child: itemSelecionado == 1
+            ? _buildRecognitionScreen()
+            : const RegScreenUser(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: itemSelecionado,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Cad. Usuário"),
-          BottomNavigationBarItem(icon: Icon(Icons.camera), label: "Câmera"),
           BottomNavigationBarItem(icon: Icon(Icons.fingerprint), label: "Reconhecimento"),
           BottomNavigationBarItem(icon: Icon(Icons.logout), label: "Sair"),
         ],
         onTap: (valor) {
-          setState(() {
-            itemSelecionado = valor;
-          });
-          if (valor == 3 && !_isRecognizing) {
-            iniciarReconhecimentoFacial();  // Inicia o reconhecimento quando o usuário seleciona a opção
+          if (valor == 2) {
+            _showExitConfirmation();
+          } else {
+            setState(() {
+              itemSelecionado = valor;
+            });
+            if (valor == 1) {
+              _initializeCamera();
+            }
           }
         },
         selectedItemColor: const Color.fromARGB(255, 203, 6, 45),

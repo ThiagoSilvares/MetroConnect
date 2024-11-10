@@ -19,6 +19,7 @@ class WelcomeScreen extends StatelessWidget {
            colors: [
              Color.fromARGB(255, 255, 255, 255),
              Color.fromARGB(255, 203, 6, 45),
+             Color.fromARGB(255, 0, 19, 136),
            ]
          )
        ),

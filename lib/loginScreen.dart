@@ -50,6 +50,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Container(
@@ -58,13 +59,13 @@ class LoginScreen extends StatelessWidget {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 203, 6, 45),
+                  Color.fromARGB(255, 0, 19, 136),
                   Color.fromARGB(255, 255, 255, 255),
                 ],
               ),
             ),
             child: const Padding(
-              padding: EdgeInsets.only(top: 60.0, left: 22),
+              padding: EdgeInsets.only(top: 75.0, left: 22),
               child: Text(
                 'Metro Connect\nLogin!',
                 style: TextStyle(
@@ -87,8 +88,8 @@ class LoginScreen extends StatelessWidget {
               ),
               height: double.infinity,
               width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30.0, left: 18.0, right: 18),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(top: 80.0, left: 18.0, right: 18),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -103,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                           'Email',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 203, 6, 45),
+                            color: Color.fromARGB(255, 0, 19, 136),
                           ),
                         ),
                       ),
@@ -120,12 +121,11 @@ class LoginScreen extends StatelessWidget {
                           'Senha',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 203, 6, 45),
+                            color: Color.fromARGB(255, 0, 19, 136),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     const SizedBox(height: 50),
                     GestureDetector(
                       onTap: () => loginUser(context),
@@ -134,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                         width: 300,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: const Color.fromARGB(255, 203, 6, 45),
+                          color: const Color.fromARGB(255, 0, 19, 136),
                         ),
                         child: const Center(
                           child: Text(
@@ -148,7 +148,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 150),
+                    const SizedBox(height: 50),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart'; 
+import 'package:firebase_core/firebase_core.dart';
+import 'faceRecognition.dart'; 
 import 'WelcomeScreen.dart'; 
 
 void main() async {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const WelcomeScreen(),
+      // home: const FaceRecognitionScreen(),
     );
   }
 }
